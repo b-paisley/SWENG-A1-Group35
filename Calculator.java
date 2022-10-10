@@ -12,16 +12,100 @@ public class Calculator {
         String equation = input.next();
         input.close();
         parseEquation(equation);
-        infixToPostfix(peqn2(equation));
-        System.out.println(""+evaluateExp(infixToPostfix(peqn2(equation)))+"");
+        if(checkErrors(equation))
+        {
+           infixToPostfix(peqn2(equation));
+           System.out.println(""+evaluateExp(infixToPostfix(peqn2(equation)))+"");
+        }
+        else 
+        {
+            System.out.println("Errors detetcted in your equation. Please try again.");
+        }
     }
 
     public static String[] parseEquation (String equationToParse) {
 
         String delimiters = "[+\\-*/]+"; // delimiters:  + - *
         String[] parsedEquation = equationToParse.split(delimiters);
-        System.out.print(Arrays.toString(parsedEquation));
+        //System.out.print(Arrays.toString(parsedEquation));
         return parsedEquation;
+    }
+
+    public static boolean checkErrors(String eqn)
+    {
+        int errors =0;
+        int eqnLength = eqn.length();
+        char[] eqnSplit = new char[eqnLength];
+        for (int i=0; i<eqnLength; i++) 
+        {
+           eqnSplit[i] = eqn.charAt(i);
+           System.out.print(eqnSplit[i] + " ");
+        }
+        System.out.print("\n");
+        //checking if equation starts or ends with an operator
+        if(eqnSplit[0] == '+' || eqnSplit[eqn.length()-1] == '+' ||
+        eqnSplit[0] == '-'  || eqnSplit[eqn.length()-1] == '-' ||
+        eqnSplit[0] == '*' || eqnSplit[eqn.length()-1] == '*' ||
+        eqnSplit[0] == '/' || eqnSplit[eqn.length()-1] == '/' ||
+        eqnSplit[0] == '%' || eqnSplit[eqn.length()-1] == '%')
+        {
+            System.out.println("Equation cannot start or end with an operator");
+              errors++;
+        }
+        //checking for two operators next to eachother
+        for(int i = 1; i < eqnSplit.length-1; i++)
+        {
+            if(eqnSplit[i] == '+' ||
+            eqnSplit[i] == '-'  ||
+            eqnSplit[i] == '*'  ||
+            eqnSplit[i] == '/'  ||
+            eqnSplit[i] == '%')
+            {
+                if(eqnSplit[i+1] == '+' ||
+                eqnSplit[i+1] == '-'  ||
+                eqnSplit[i+1] == '*'  ||
+                eqnSplit[i+1] == '/'  ||
+                eqnSplit[i+1] == '%')
+                {
+                    System.out.println("Equation cannot have two operators next to eachother");
+                    errors++;
+                }
+            }
+        }
+        //checking for unclosed brackets
+        int balance = 0;
+        for(int i = 0; i < eqnSplit.length; i++)
+        {
+            if(eqnSplit[i] == '(')
+            {
+                balance++;
+            }
+            else if(eqnSplit[i] == ')')
+            {
+                if(balance !=0)
+                {
+                    balance--;
+                }
+                else
+                {
+                    System.out.println("Equation cannot have unclosed brackets");
+                    errors++;
+                }
+            }
+        }
+        if (balance !=0)
+        {
+            System.out.println("Equation cannot have unclosed brackets");
+            errors++;
+        }
+        if(errors == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public static double evaluateExp(String[] postfix){
