@@ -32,7 +32,7 @@ public class Calculator {
             System.out.print("\n");
 
             if(noUnexpectedString(eqnSplit) && noOperatorsOnStartOrEnd(eqnSplit) &&
-         noOperatorsTogether(eqnSplit) && noUnclosedBackets(eqnSplit))
+         noOperatorsTogether(eqnSplit) && noUnclosedBrackets(eqnSplit))
             {
                 infixToPostfix(peqn2(equation));
                 System.out.println(""+evaluateExp(infixToPostfix(peqn2(equation)))+"");
@@ -123,7 +123,7 @@ public class Calculator {
         return true;
     }
 
-    public static boolean noUnclosedBackets(char[] eqn)
+    public static boolean noUnclosedBrackets(char[] eqn)
     {
         //checking for unclosed brackets
         int balance = 0;
