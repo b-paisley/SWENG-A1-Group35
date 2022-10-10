@@ -7,20 +7,44 @@ public class Calculator {
 
     public static void main(String[] args) {
 
+
+        boolean exit = false;
         Scanner input = new Scanner(System.in);
-        System.out.print("Enter equation:");
-        String equation = input.next();
-        input.close();
-        parseEquation(equation);
-        if(checkErrors(equation))
+        do
         {
-           infixToPostfix(peqn2(equation));
-           System.out.println(""+evaluateExp(infixToPostfix(peqn2(equation)))+"");
-        }
-        else 
-        {
-            System.out.println("Errors detetcted in your equation. Please try again.");
-        }
+            System.out.print("Enter equation:");
+            String equation = input.next();
+            if(equation.equals("exit"))
+            {
+                exit = true;
+            }
+            else
+            {
+    
+            parseEquation(equation);
+            char[] eqnSplit = new char[equation.length()];
+    
+            for (int i=0; i<equation.length(); i++) 
+            {
+               eqnSplit[i] = equation.charAt(i);
+               System.out.print(eqnSplit[i] + " ");
+            }
+            System.out.print("\n");
+
+            if(noUnexpectedString(eqnSplit) && noOperatorsOnStartOrEnd(eqnSplit) &&
+         noOperatorsTogether(eqnSplit) && noUnclosedBrackets(eqnSplit))
+            {
+                infixToPostfix(peqn2(equation));
+                System.out.println(""+evaluateExp(infixToPostfix(peqn2(equation)))+"");
+           }
+           else 
+           {
+                System.out.println("Errors detetcted in your equation. Please try again.");
+           }
+    }
+    }
+    while(!exit);
+    input.close();
     }
 
     public static String[] parseEquation (String equationToParse) {
@@ -31,78 +55,85 @@ public class Calculator {
         return parsedEquation;
     }
 
-    public static boolean checkErrors(String eqn)
+    public static boolean noUnexpectedString(char[] eqn)
     {
-        int errors =0;
-        int eqnLength = eqn.length();
-        char[] eqnSplit = new char[eqnLength];
-        for (int i=0; i<eqnLength; i++) 
-        {
-           eqnSplit[i] = eqn.charAt(i);
-           System.out.print(eqnSplit[i] + " ");
-        }
-        System.out.print("\n");
         //checking for unexpected string characters (letters, etc)
-        int print = 0;
-        for(int i =0; i < eqnLength;i++)
+        for(int i =0; i < eqn.length; i++)
         {
-              if (eqnSplit[i] != '+' ||
-              eqnSplit[i] != '-' ||
-              eqnSplit[i] != '*' ||
-              eqnSplit[i] != '/' ||
-              eqnSplit[i] != '%' ||
-              eqnSplit[i] != '(' ||
-              eqnSplit[i] != ')' ||
-              (eqnSplit[i] < '0' && eqnSplit[i] > '9'))
+              if (eqn[i] == '+' ||
+              eqn[i] == '-' ||
+              eqn[i] == '*' ||
+              eqn[i] == '/' ||
+              eqn[i] == '%' ||
+              eqn[i] == '(' ||
+              eqn[i] == ')' ||
+              (eqn[i] >= '0' && eqn[i] <= '9'))
               {
-                if(print == 0)
-                {
-                 System.out.println("Your equation contains invalid characters.");
-                }
-                 print = 1;
-                  errors++;
+                continue;
               }
+              else
+              {
+                 System.out.println("Your equation contains invalid characters.");
+                 return false;
+              }
+       }
+        return true;
+    }
 
-        }
+    public static boolean noOperatorsOnStartOrEnd(char[] eqn)
+    {
         //checking if equation starts or ends with an operator
-        if(eqnSplit[0] == '+' || eqnSplit[eqn.length()-1] == '+' ||
-        eqnSplit[0] == '-'  || eqnSplit[eqn.length()-1] == '-' ||
-        eqnSplit[0] == '*' || eqnSplit[eqn.length()-1] == '*' ||
-        eqnSplit[0] == '/' || eqnSplit[eqn.length()-1] == '/' ||
-        eqnSplit[0] == '%' || eqnSplit[eqn.length()-1] == '%')
+        if(eqn[0] == '+' || eqn[eqn.length-1] == '+' ||
+        eqn[0] == '-'  || eqn[eqn.length-1] == '-' ||
+        eqn[0] == '*' || eqn[eqn.length-1] == '*' ||
+        eqn[0] == '/' || eqn[eqn.length-1] == '/' ||
+        eqn[0] == '%' || eqn[eqn.length-1] == '%')
         {
             System.out.println("Equation cannot start or end with an operator");
-              errors++;
+            return false;
         }
-        //checking for two operators next to eachother
-        for(int i = 1; i < eqnSplit.length-1; i++)
+        else
         {
-            if(eqnSplit[i] == '+' ||
-            eqnSplit[i] == '-'  ||
-            eqnSplit[i] == '*'  ||
-            eqnSplit[i] == '/'  ||
-            eqnSplit[i] == '%')
+            return true;
+        }
+    }
+
+    public static boolean noOperatorsTogether(char[] eqn)
+    {
+        //checking for two operators next to eachother
+        for(int i = 1; i < eqn.length-1; i++)
+        {
+            if(eqn[i] == '+' ||
+            eqn[i] == '-'  ||
+            eqn[i] == '*'  ||
+            eqn[i] == '/'  ||
+            eqn[i] == '%')
             {
-                if(eqnSplit[i+1] == '+' ||
-                eqnSplit[i+1] == '-'  ||
-                eqnSplit[i+1] == '*'  ||
-                eqnSplit[i+1] == '/'  ||
-                eqnSplit[i+1] == '%')
+                if(eqn[i+1] == '+' ||
+                eqn[i+1] == '-'  ||
+                eqn[i+1] == '*'  ||
+                eqn[i+1] == '/'  ||
+                eqn[i+1] == '%')
                 {
                     System.out.println("Equation cannot have two operators next to eachother");
-                    errors++;
+                    return false;
                 }
             }
         }
+        return true;
+    }
+
+    public static boolean noUnclosedBrackets(char[] eqn)
+    {
         //checking for unclosed brackets
         int balance = 0;
-        for(int i = 0; i < eqnSplit.length; i++)
+        for(int i = 0; i < eqn.length; i++)
         {
-            if(eqnSplit[i] == '(')
+            if(eqn[i] == '(')
             {
                 balance++;
             }
-            else if(eqnSplit[i] == ')')
+            else if(eqn[i] == ')')
             {
                 if(balance !=0)
                 {
@@ -111,22 +142,17 @@ public class Calculator {
                 else
                 {
                     System.out.println("Equation cannot have unclosed brackets");
-                    errors++;
                 }
             }
         }
         if (balance !=0)
         {
             System.out.println("Equation cannot have unclosed brackets");
-            errors++;
-        }
-        if(errors == 0)
-        {
-            return true;
+            return false;
         }
         else
         {
-            return false;
+           return true;
         }
     }
 

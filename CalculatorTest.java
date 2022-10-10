@@ -1,8 +1,19 @@
 import org.junit.jupiter.api.Test;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.*;
 
+
 class CalculatorTest {
+
+    @Test
+    public void testConstructor()
+    {
+      new Calculator();
+    }
+
 @Test
     public void testParser(){
         String s = "5*4+3-2";
@@ -36,8 +47,29 @@ class CalculatorTest {
     }
     @Test
     public void testAns(){
-        String[] exp = {"3864","4","138","*","/","23","-"};
-        double ans = -16;
-        assertEquals(ans, Calculator.evaluateExp(exp));
+        String[] exp = {"67","90","78","-","*"};
+        double ans = 804;
+        assertEquals(ans, Calculator.evaluateExp(exp), 0);
     }
+
+    @Test
+    public void testUnexpectedString(){
+        char[] inp = {'3', 'a', '*', 'h', 'a'};
+        assertFalse(Calculator.noUnexpectedString(inp));
+}
+    @Test
+    public void testNoOperatorsStartOrEnd(){
+        char[] inp = {'+', '6', '4', '+', '4'};
+        assertFalse(Calculator.noOperatorsOnStartOrEnd(inp));
+ }
+    @Test
+    public void testNoOperatorsTogether(){
+        char[] inp = {'3', '+', '+', '9', '1'};
+        assertFalse(Calculator.noOperatorsTogether(inp));
+}
+    @Test
+    public void testNoUnclosedBrackets(){
+        char[] inp = {'(', '3', '+', '9', '1','*','1',')','-','('};
+        assertFalse(Calculator.noUnclosedBrackets(inp));
+}
 }
