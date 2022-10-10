@@ -42,6 +42,28 @@ public class Calculator {
            System.out.print(eqnSplit[i] + " ");
         }
         System.out.print("\n");
+        //checking for unexpected string characters (letters, etc)
+        int print = 0;
+        for(int i =0; i < eqnLength;i++)
+        {
+              if (eqnSplit[i] != '+' ||
+              eqnSplit[i] != '-' ||
+              eqnSplit[i] != '*' ||
+              eqnSplit[i] != '/' ||
+              eqnSplit[i] != '%' ||
+              eqnSplit[i] != '(' ||
+              eqnSplit[i] != ')' ||
+              (eqnSplit[i] < '0' && eqnSplit[i] > '9'))
+              {
+                if(print == 0)
+                {
+                 System.out.println("Your equation contains invalid characters.");
+                }
+                 print = 1;
+                  errors++;
+              }
+
+        }
         //checking if equation starts or ends with an operator
         if(eqnSplit[0] == '+' || eqnSplit[eqn.length()-1] == '+' ||
         eqnSplit[0] == '-'  || eqnSplit[eqn.length()-1] == '-' ||
