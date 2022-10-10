@@ -39,7 +39,7 @@ public class Calculator {
            }
            else 
            {
-                System.out.println("Errors detetcted in your equation. Please try again.");
+                System.out.println("Errors detected in your equation. Please try again.");
            }
     }
     }
@@ -193,8 +193,8 @@ public class Calculator {
         char[] cs = entry.toCharArray();
         ArrayList<String> temp = new ArrayList<>();
         for (int i = 0; i<entry.length(); i++){
-            if(cs[i] == '(' || cs[i] == ')' || cs[i] == '+' || cs[i] == '-' || cs[i] == '*'){
-                temp.add(eqn.toString());
+            if(cs[i] == '(' || cs[i] == ')' || cs[i] == '+' || cs[i] == '-' || cs[i] == '*' || cs[i] =='/'){
+                //temp.add(eqn.toString());
                 temp.add(String.valueOf(cs[i]));
                 eqn = new StringBuilder();
             }
@@ -203,9 +203,10 @@ public class Calculator {
             }
             else {
                 eqn.append(cs[i]);
+                temp.add(eqn.toString());
             }
         }
-        temp.add(eqn.toString());
+        //temp.add(eqn.toString());
         return temp.toArray(new String[0]);
     }
 
