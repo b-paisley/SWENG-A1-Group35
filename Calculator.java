@@ -194,7 +194,7 @@ public class Calculator {
         ArrayList<String> temp = new ArrayList<>();
         for (int i = 0; i<entry.length(); i++){
             if(cs[i] == '(' || cs[i] == ')' || cs[i] == '+' || cs[i] == '-' || cs[i] == '*' || cs[i] =='/'){
-                //temp.add(eqn.toString());
+                if(eqn.toString()!="") temp.add(eqn.toString());
                 temp.add(String.valueOf(cs[i]));
                 eqn = new StringBuilder();
             }
@@ -203,10 +203,10 @@ public class Calculator {
             }
             else {
                 eqn.append(cs[i]);
-                temp.add(eqn.toString());
+                //temp.add(eqn.toString());
             }
         }
-        //temp.add(eqn.toString());
+        if(eqn.toString()!="") temp.add(eqn.toString());
         return temp.toArray(new String[0]);
     }
 
