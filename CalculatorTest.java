@@ -69,7 +69,7 @@ class CalculatorTest {
 }
     @Test
     public void testNoUnclosedBrackets(){
-        char[] inp = {'(', '3', '+', '9', '1','+','1',')','-','('};
+        char[] inp = {'(', '3', '+', '9', '1','*','1',')','-','('};
         assertFalse(Calculator.noUnclosedBrackets(inp));
 }
 }
