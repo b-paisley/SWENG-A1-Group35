@@ -7,31 +7,44 @@ public class Calculator {
 
     public static void main(String[] args) {
 
+
+        boolean exit = false;
         Scanner input = new Scanner(System.in);
-        System.out.print("Enter equation:");
-        String equation = input.next();
-        input.close();
-
-        parseEquation(equation);
-        char[] eqnSplit = new char[equation.length()];
-
-        for (int i=0; i<equation.length(); i++) 
+        do
         {
-           eqnSplit[i] = equation.charAt(i);
-           System.out.print(eqnSplit[i] + " ");
-        }
-        System.out.print("\n");
+            System.out.print("Enter equation:");
+            String equation = input.next();
+            if(equation.equals("exit"))
+            {
+                exit = true;
+            }
+            else
+            {
+    
+            parseEquation(equation);
+            char[] eqnSplit = new char[equation.length()];
+    
+            for (int i=0; i<equation.length(); i++) 
+            {
+               eqnSplit[i] = equation.charAt(i);
+               System.out.print(eqnSplit[i] + " ");
+            }
+            System.out.print("\n");
 
-        if(noUnexpectedString(eqnSplit) && noOperatorsOnStartOrEnd(eqnSplit) &&
+            if(noUnexpectedString(eqnSplit) && noOperatorsOnStartOrEnd(eqnSplit) &&
          noOperatorsTogether(eqnSplit) && noUnclosedBackets(eqnSplit))
-        {
-           infixToPostfix(peqn2(equation));
-           System.out.println(""+evaluateExp(infixToPostfix(peqn2(equation)))+"");
-        }
-        else 
-        {
-            System.out.println("Errors detetcted in your equation. Please try again.");
-        }
+            {
+                infixToPostfix(peqn2(equation));
+                System.out.println(""+evaluateExp(infixToPostfix(peqn2(equation)))+"");
+           }
+           else 
+           {
+                System.out.println("Errors detetcted in your equation. Please try again.");
+           }
+    }
+    }
+    while(!exit);
+    input.close();
     }
 
     public static String[] parseEquation (String equationToParse) {
